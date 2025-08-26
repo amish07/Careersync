@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerSync Pro - AI-Powered Job Portal</title>
+    
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --blur: backdrop-filter: blur(20px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Background with Animated Particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            opacity: 0.03;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Top Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--gray-600);
+            border: 2px solid var(--gray-200);
+        }
+
+        .btn-ghost:hover {
+            background: var(--gray-100);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: var(--shadow-xl);
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .dropdown-item.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            margin-top: 100px;
+        }
+
+        /* Hero Section with 3D Effects */
+        .hero {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: text-glow 2s ease-in-out infinite alternate;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @keyframes text-glow {
+            from { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.8)); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Job Cards */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .job-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .job-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .job-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .job-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .job-company {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .job-location {
+            color: var(--gray-500);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .job-salary {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success);
+            margin: 1rem 0;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .job-tag {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .job-tag:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .job-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin: 1rem 0;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-400);
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .wishlist-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            transform: scale(1.2);
+        }
+
+        .wishlist-btn.active {
+            color: var(--error);
+            animation: heart-beat 0.5s ease;
+        }
+
+        @keyframes heart-beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* AI Features Section */
+        .ai-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 2px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: ai-shimmer 3s infinite;
+        }
+
+        @keyframes ai-shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.8); }
+        }
+
+        /* Enhanced Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Enhanced Search Filters */
+        .search-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        /* AI Chat Interface */
+        .ai-chat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .ai-chat-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .ai-chat-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .ai-chat-overlay.show .ai-chat-container {
+            transform: scale(1);
+        }
+
+        .ai-chat-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ai-message, .user-message {
+            max-width: 80%;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: message-fade-in 0.3s ease;
+        }
+
+        .ai-message {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            align-self: flex-start;
+            border-bottom-left-radius: 8px;
+        }
+
+        .user-message {
+            background: var(--gradient-primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 8px;
+        }
+
+        @keyframes message-fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-chat-input-container {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(226, 232, 240, 0.5);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* AI Assistant Floating Button */
+        .ai-assistant {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.75rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+            transition: all 0.3s ease;
+            z-index: 1500;
+            animation: float-assistant 3s ease-in-out infinite;
+        }
+
+        .ai-assistant:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.8);
+        }
+
+        @keyframes float-assistant {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Enhanced Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .modal-content {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            padding: 1rem 2rem 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            border: none;
+            color: var(--gray-500);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--error);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Loading States */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-200);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: section-fade-in 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes section-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-xl);
+            z-index: 2500;
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--error); }
+        .toast.warning { border-left: 4px solid var(--warning); }
+        .toast.info { border-left: 4px solid var(--accent); }
+
+        /* AI Analysis Cards */
+        .analysis-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .match-score-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            animation: score-pulse 2s infinite alternate;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: conic-gradient(from 0deg, var(--success), var(--accent), var(--primary), var(--secondary), var(--success));
+            border-radius: 50%;
+            animation: rotate 3s linear infinite;
+            z-index: -1;
+        }
+
+        .score-excellent { background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%); }
+        .score-good { background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%); }
+        .score-fair { background: linear-gradient(135deg, var(--warning) 0%, var(--secondary) 100%); }
+        .score-poor { background: linear-gradient(135deg, var(--error) 0%, var(--warning) 100%); }
+
+        @keyframes score-pulse {
+            from { box-shadow: 0 0 30px rgba(99, 102, 241, 0.5); }
+            to { box-shadow: 0 0 60px rgba(99, 102, 241, 0.8); }
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .analysis-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+        }
+
+        .analysis-list {
+            list-style: none;
+        }
+
+        .analysis-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .analysis-list li:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-list li:hover {
+            transform: translateX(4px);
+            color: var(--primary);
+        }
+
+        .ai-typing {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            border-bottom-left-radius: 8px;
+            max-width: 80%;
+            align-self: flex-start;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .filters-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            
+            .jobs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-chat-container {
+                width: 95%;
+                height: 90vh;
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles">
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Enhanced Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showSection('home')">
+                🚀 CareerSync Pro
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#" class="nav-link active" onclick="showSection('home')">Home</a>
+                <a href="#" class="nav-link" onclick="showSection('jobs')">Find Jobs</a>
+                <a href="#" class="nav-link" onclick="showSection('applications')">My Applications</a>
+                <button class="btn btn-secondary" onclick="openInterviewCopilot()">Interview Prep</button>
+            </div>
+            
+            <div id="authButtons" class="auth-buttons">
+                <button class="btn btn-ghost" onclick="showAuthModal('login')">Sign In</button>
+                <button class="btn btn-primary" onclick="showAuthModal('signup')">Get Started</button>
+            </div>
+            
+            <div id="profileSection" class="profile-dropdown" style="display: none;">
+                <button class="profile-btn" onclick="toggleProfileDropdown()">
+                    <span id="profileInitial">U</span>
+                </button>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <a href="#" class="dropdown-item" onclick="showSection('profile')">
+                        <span>👤</span> My Profile
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="showSection('settings')">
+                        <span>⚙️</span> Settings
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="showSection('applications')">
+                        <span>🎯</span> Applications
+                    </a>
+                    <a href="#" class="dropdown-item danger" onclick="logout()">
+                        <span>🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Enhanced Home Section -->
+        <div id="home" class="content-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Find Your Dream Career</h1>
+                    <p>AI-powered job matching that connects you with opportunities that truly fit your skills and aspirations</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                        <button class="btn btn-primary" onclick="showSection('jobs')">
+                            <span>🔍</span> Explore Jobs
+                        </button>
+                        <button class="btn btn-secondary" onclick="openAIChat()">
+                            <span>🤖</span> AI Career Assistant
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalJobs">0</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalApplications">0</div>
+                    <div class="stat-label">Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">AI Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">AI Support</div>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 3rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; font-weight: 800; color: var(--gray-800);">
+                    Why CareerSync Pro?
+                </h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div class="glass-card" style="padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🤖</div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">AI-Powered Matching</h3>
+                        <p style="color: var(--gray-600); line-height: 1.6;">Advanced AI analyzes your resume and matches you with the perfect opportunities based on your skills and experience.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Smart Analytics</h3>
+                        <p style="color: var(--gray-600); line-height: 1.6;">Get detailed insights into your application performance and market trends to optimize your job search strategy.</p>
+                    </div>
+                    <div class="glass-card" style="padding: 2rem; text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Application Tracking</h3>
+                        <p style="color: var(--gray-600); line-height: 1.6;">Manage all your applications in one place with our intuitive interface and never miss a follow-up.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Jobs Section -->
+        <div id="jobs" class="content-section">
+            <div class="ai-section">
+                <div class="ai-header">
+                    <div class="ai-icon">🤖</div>
+                    <div>
+                        <h2 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 700;">AI-Powered Job Search</h2>
+                        <p style="color: var(--gray-600);">Let our advanced AI help you discover the perfect career opportunities</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openAIChat()">
+                        <span>💬</span> Ask AI Assistant
+                    </button>
+                </div>
+            </div>
+            
+            <div class="search-section">
+                <div class="filters-grid">
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="🔍 Search jobs, companies, or skills..." id="searchInput">
+                    </div>
+                    <div class="form-group">
+                        <select class="form-select" id="locationFilter">
+                            <option value="">📍 All Locations</option>
+                            <option value="remote">🌐 Remote</option>
+                            <option value="new-york">🗽 New York</option>
+                            <option value="san-francisco">🌉 San Francisco</option>
+                            <option value="london">🇬🇧 London</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-select" id="categoryFilter">
+                            <option value="">📂 All Categories</option>
+                            <option value="technology">💻 Technology</option>
+                            <option value="design">🎨 Design</option>
+                            <option value="marketing">📈 Marketing</option>
+                            <option value="sales">💼 Sales</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" onclick="filterJobs()">
+                            <span>🔍</span> Search
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-secondary" onclick="aiSmartFilter()">
+                            <span>✨</span> AI Filter
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jobs-grid" id="jobsGrid">
+                <!-- Jobs will be populated here -->
+            </div>
+        </div>
+
+        <!-- Applications Section -->
+        <div id="applications" class="content-section">
+            <div class="glass-card" style="padding: 2rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; font-weight: 800; color: var(--gray-800);">
+                    My Job Applications
+                </h2>
+                
+                <div class="stats-grid" style="margin-bottom: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number" id="wishlistCount">0</div>
+                        <div class="stat-label">Saved Jobs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="appliedCount">0</div>
+                        <div class="stat-label">Applications Sent</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="interviewCount">0</div>
+                        <div class="stat-label">Interviews</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="offerCount">0</div>
+                        <div class="stat-label">Offers Received</div>
+                    </div>
+                </div>
+
+                <div id="applicationsContent">
+                    <!-- Applications will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Other sections -->
+        <div id="profile" class="content-section">
+            <div class="glass-card" style="padding: 3rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; font-weight: 800; color: var(--gray-800);">
+                    My Profile
+                </h2>
+                <div style="text-align: center; color: var(--gray-600);">
+                    <p>Profile management features coming soon!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings" class="content-section">
+            <div class="glass-card" style="padding: 3rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; font-weight: 800; color: var(--gray-800);">
+                    Settings
+                </h2>
+                <div style="text-align: center; color: var(--gray-600);">
+                    <p>Settings panel coming soon!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Interface -->
+    <div class="ai-chat-overlay" id="aiChatOverlay">
+        <div class="ai-chat-container">
+            <div class="ai-chat-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="ai-icon" style="width: 40px; height: 40px; font-size: 1.2rem;">🤖</div>
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 0.25rem;">AI Career Assistant</h3>
+                        <p style="color: var(--gray-600); font-size: 0.9rem; margin: 0;">Powered by Llama 3.2 - Ask me anything about jobs, careers, or applications</p>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeAIChat()">×</button>
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message">
+                    👋 Hi! I'm your AI Career Assistant powered by advanced language models. I can help you find jobs, analyze your resume, prepare for interviews, and answer any career-related questions. What would you like to know?
+                </div>
+            </div>
+            <div class="ai-chat-input-container">
+                <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Ask me about jobs, skills, or career advice..." onkeypress="handleChatKeyPress(event)">
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    <span>📤</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Modals -->
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal" style="width: 450px;">
+            <div class="modal-header">
+                <h2 id="authModalTitle" style="color: var(--primary); font-weight: 700;">Welcome Back</h2>
+                <button class="close-btn" onclick="closeAuthModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <form id="authForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="authEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="authPassword" required>
+                    </div>
+                    <div class="form-group" id="nameGroup" style="display: none;">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="authName">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="authForm" class="btn btn-primary" id="authSubmitBtn">
+                    <span id="authBtnText">Sign In</span>
+                </button>
+                <button type="button" class="btn btn-ghost" onclick="toggleAuthMode()">
+                    <span id="authSwitchText">Create Account</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div class="modal-overlay" id="jobModal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 id="modalJobTitle" style="color: var(--primary); font-weight: 700;"></h2>
+                <button class="close-btn" onclick="closeModal('jobModal')">×</button>
+            </div>
+            <div class="modal-content" id="modalJobContent">
+                <!-- Job details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="applyToJob()">
+                    <span>📤</span> Apply Now
+                </button>
+                <button class="btn btn-secondary" onclick="toggleWishlist()" id="wishlistModalBtn">
+                    <span>💖</span> Add to Wishlist
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+
+    <!-- AI Assistant Floating Button -->
+    <button class="ai-assistant" onclick="openAIChat()" title="AI Career Assistant">
+        🤖
+    </button>
+
+    <script>
+        // Global Variables and Configuration
+        const AI_CONFIG = {
+            model: 'meta-llama/llama-3.2-3b-instruct:free',
+            apiKey: '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',
+            baseUrl: 'https://openrouter.ai/api/v1/chat/completions'
+        };
+
+        let jobs = [];
+        let applications = [];
+        let wishlist = [];
+        let currentUser = null;
+        let currentJob = null;
+        let isAuthMode = 'login';
+        let aiMessages = [];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            createParticles();
+            setupEventListeners();
+            loadSampleData();
+            updateStats();
+            renderJobs();
+        });
+
+        function initializeApp() {
+            console.log('CareerSync Pro initialized with AI model:', AI_CONFIG.model);
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function setupEventListeners() {
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') filterJobs();
+            });
+            
+            // Auto-filter with debounce
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(filterJobs, 300);
+            });
+
+            // Filter dropdowns
+            document.getElementById('locationFilter').addEventListener('change', filterJobs);
+            document.getElementById('categoryFilter').addEventListener('change', filterJobs);
+
+            // Auth form
+            document.getElementById('authForm').addEventListener('submit', handleAuth);
+
+            // AI chat input
+            document.getElementById('aiChatInput').addEventListener('keypress', handleChatKeyPress);
+
+            // Close modals when clicking outside
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal-overlay')) {
+                    const modal = event.target;
+                    modal.classList.remove('show');
+                    setTimeout(() => modal.style.display = 'none', 300);
+                }
+
+                // Close dropdown if clicking outside
+                if (!event.target.closest('.profile-dropdown')) {
+                    const dropdown = document.getElementById('profileDropdown');
+                    if (dropdown) dropdown.classList.remove('show');
+                }
+            });
+        }
+
+        function loadSampleData() {
+            jobs = [
+                {
+                    id: 1,
+                    title: "Senior Frontend Developer",
+                    company: "TechCorp Inc.",
+                    location: "San Francisco, CA",
+                    category: "technology",
+                    type: "full-time",
+                    experience: "senior",
+                    salary: "$120,000 - $150,000",
+                    description: "We're looking for a Senior Frontend Developer to join our dynamic team. You'll be responsible for building and maintaining our web applications using React, TypeScript, and modern frontend technologies.",
+                    requirements: "5+ years of experience with React, TypeScript, HTML5, CSS3. Experience with state management, testing frameworks, and responsive design.",
+                    benefits: "Comprehensive health insurance, 401k matching, flexible work hours, remote work options, professional development budget",
+                    skills: ["React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Node.js", "Git"],
+                    postedDate: new Date().toISOString(),
+                    applications: 23
+                },
+                {
+                    id: 2,
+                    title: "UX/UI Designer",
+                    company: "DesignStudio Pro",
+                    location: "Remote",
+                    category: "design",
+                    type: "full-time",
+                    experience: "mid",
+                    salary: "$80,000 - $100,000",
+                    description: "Join our creative team as a UX/UI Designer. You'll design intuitive user interfaces and create exceptional user experiences for web and mobile applications.",
+                    requirements: "3+ years of UX/UI design experience. Proficiency in Figma, Adobe Creative Suite, prototyping tools.",
+                    benefits: "Flexible schedule, creative freedom, professional development, health coverage",
+                    skills: ["Figma", "Adobe XD", "Sketch", "Prototyping", "User Research"],
+                    postedDate: new Date().toISOString(),
+                    applications: 31
+                },
+                {
+                    id: 3,
+                    title: "Marketing Manager",
+                    company: "GrowthCo",
+                    location: "New York, NY",
+                    category: "marketing",
+                    type: "full-time",
+                    experience: "mid",
+                    salary: "$90,000 - $110,000",
+                    description: "Lead our marketing initiatives and drive brand growth. You'll develop and execute comprehensive marketing strategies and manage multi-channel campaigns.",
+                    requirements: "4+ years of marketing experience. Knowledge of digital marketing, SEO/SEM, social media marketing.",
+                    benefits: "Competitive salary, performance bonuses, comprehensive health benefits, stock options",
+                    skills: ["Digital Marketing", "SEO", "SEM", "Google Analytics", "Content Strategy"],
+                    postedDate: new Date().toISOString(),
+                    applications: 18
+                },
+                {
+                    id: 4,
+                    title: "Data Scientist",
+                    company: "DataTech Solutions",
+                    location: "Remote",
+                    category: "technology",
+                    type: "full-time",
+                    experience: "senior",
+                    salary: "$130,000 - $160,000",
+                    description: "Join our data science team to build predictive models and extract insights from large datasets. Work on machine learning projects that drive business decisions.",
+                    requirements: "Masters in Data Science or related field. 5+ years of experience with Python, R, SQL. Experience with ML frameworks.",
+                    benefits: "Top-tier salary, equity options, flexible remote work, conference attendance",
+                    skills: ["Python", "R", "SQL", "Machine Learning", "TensorFlow", "Statistics"],
+                    postedDate: new Date().toISOString(),
+                    applications: 45
+                }
+            ];
+        }
+
+        // AI Integration Functions
+        async function callAI(prompt, systemPrompt = '') {
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            
+            try {
+                const response = await fetch(AI_CONFIG.baseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${AI_CONFIG.apiKey}`,
+                        'HTTP-Referer': window.location.origin,
+                        'X-Title': 'CareerSync Pro'
+                    },
+                    body: JSON.stringify({
+                        model: AI_CONFIG.model,
+                        messages: [
+                            {
+                                role: 'system',
+                                content: systemPrompt || `You are a helpful AI career assistant for CareerSync Pro. You help users with job searching, career advice, resume analysis, and interview preparation. Be concise, helpful, and professional. Current job market data: ${jobs.length} active positions across technology, design, marketing, and data science fields.`
+                            },
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 500,
+                        top_p: 1,
+                        frequency_penalty: 0,
+                        presence_penalty: 0
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`AI service error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('AI API Error:', error);
+                return generateFallbackResponse(prompt);
+            } finally {
+                sendBtn.disabled = false;
+            }
+        }
+
+        function generateFallbackResponse(prompt) {
+            const lowerPrompt = prompt.toLowerCase();
+            
+            if (lowerPrompt.includes('job') && (lowerPrompt.includes('find') || lowerPrompt.includes('search'))) {
+                return `I can help you find jobs! Currently, we have ${jobs.length} active positions. Use the search filters to find roles matching your skills, or try our AI Smart Filter for personalized recommendations. What type of role interests you?`;
+            } 
+            
+            if (lowerPrompt.includes('resume') || lowerPrompt.includes('cv')) {
+                return `Resume analysis is key to job success! When you apply for positions, I'll analyze your resume against job requirements and provide detailed feedback on skill matches, strengths, and improvement suggestions. Would you like tips on optimizing your resume?`;
+            }
+            
+            if (lowerPrompt.includes('interview')) {
+                return `Interview preparation is crucial! I can help with common questions, company research strategies, and presentation tips. For hands-on practice, try our Interview Copilot feature. What aspect of interview prep would you like to focus on?`;
+            }
+            
+            if (lowerPrompt.includes('salary') || lowerPrompt.includes('pay')) {
+                const techJobs = jobs.filter(j => j.category === 'technology');
+                const designJobs = jobs.filter(j => j.category === 'design');
+                return `Based on current listings: Technology roles range $80k-$160k, Design positions $70k-$120k, Marketing roles $60k-$110k. Salaries vary by location and experience. Would you like me to filter jobs by specific salary ranges?`;
+            }
+            
+            return `I'm here to help with your career journey! I can assist with job searching, resume optimization, interview preparation, and career advice. Our platform has ${jobs.length} active positions. What specific area would you like help with?`;
+        }
+
+        async function analyzeResumeWithAI(jobDescription, resumeText) {
+            const prompt = `Analyze this resume against the job requirements and provide a detailed assessment:
+
+JOB REQUIREMENTS:
+${jobDescription}
+
+RESUME CONTENT:
+${resumeText}
+
+Please provide:
+1. Match score (0-100%)
+2. Matching skills found
+3. Missing skills that are important
+4. Key strengths
+5. Improvement suggestions
+
+Format as JSON with these fields: score, matchingSkills, missingSkills, strengths, suggestions`;
+
+            const systemPrompt = 'You are an expert resume analyzer. Provide objective, actionable feedback in the requested JSON format.';
+            
+            try {
+                const response = await callAI(prompt, systemPrompt);
+                return JSON.parse(response);
+            } catch (error) {
+                console.error('Resume analysis error:', error);
+                return generateFallbackAnalysis();
+            }
+        }
+
+        function generateFallbackAnalysis() {
+            const score = Math.floor(Math.random() * 40) + 50; // 50-90%
+            return {
+                score,
+                matchingSkills: ['JavaScript', 'React', 'Problem Solving', 'Team Collaboration'],
+                missingSkills: ['TypeScript', 'Testing Frameworks', 'Cloud Platforms'],
+                strengths: ['Strong technical foundation', 'Relevant experience', 'Good educational background'],
+                suggestions: ['Add quantifiable achievements', 'Include recent project details', 'Highlight leadership experience']
+            };
+        }
+
+        async function generateCoverLetterWithAI(jobTitle, company, userSkills = []) {
+            const prompt = `Generate a professional cover letter for:
+Position: ${jobTitle}
+Company: ${company}
+Skills: ${userSkills.join(', ')}
+
+Make it personalized, concise, and professional. Include specific examples and show enthusiasm.`;
+
+            const systemPrompt = 'You are an expert career writer. Create compelling, professional cover letters that highlight relevant experience and show genuine interest.';
+            
+            try {
+                const response = await callAI(prompt, systemPrompt);
+                return response;
+            } catch (error) {
+                console.error('Cover letter generation error:', error);
+                return generateFallbackCoverLetter(jobTitle, company);
+            }
+        }
+
+        function generateFallbackCoverLetter(jobTitle, company) {
+            return `Dear Hiring Manager,
+
+I am excited to apply for the ${jobTitle} position at ${company}. With my relevant experience and passion for innovation, I am confident I can contribute meaningfully to your team.
+
+My background includes:
+• Strong technical skills aligned with your requirements
+• Proven track record in collaborative environments  
+• Commitment to continuous learning and growth
+
+I am particularly drawn to ${company} because of your reputation for excellence and innovation. I believe my skills and enthusiasm would make me a valuable addition to your team.
+
+I would welcome the opportunity to discuss how my experience can contribute to ${company}'s continued success.
+
+Best regards,
+[Your Name]`;
+        }
+
+        // Authentication Functions
+        function showAuthModal(mode) {
+            isAuthMode = mode;
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('authModalTitle');
+            const btnText = document.getElementById('authBtnText');
+            const switchText = document.getElementById('authSwitchText');
+            const nameGroup = document.getElementById('nameGroup');
+
+            if (mode === 'login') {
+                title.textContent = 'Welcome Back';
+                btnText.textContent = 'Sign In';
+                switchText.textContent = 'Create Account';
+                nameGroup.style.display = 'none';
+            } else {
+                title.textContent = 'Create Account';
+                btnText.textContent = 'Get Started';
+                switchText.textContent = 'Sign In';
+                nameGroup.style.display = 'block';
+            }
+
+            showModal('authModal');
+        }
+
+        function closeAuthModal() {
+            closeModal('authModal');
+        }
+
+        function toggleAuthMode() {
+            isAuthMode = isAuthMode === 'login' ? 'signup' : 'login';
+            showAuthModal(isAuthMode);
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value;
+
+            if (isAuthMode === 'signup') {
+                currentUser = {
+                    id: Date.now(),
+                    email,
+                    name: name || email.split('@')[0],
+                    profile: { phone: '', location: '', bio: '' }
+                };
+                showToast('Account created successfully!', 'success');
+            } else {
+                currentUser = {
+                    id: Date.now(),
+                    email,
+                    name: email.split('@')[0],
+                    profile: { phone: '', location: '', bio: '' }
+                };
+                showToast('Welcome back!', 'success');
+            }
+
+            closeAuthModal();
+            updateUIForLoggedInUser();
+            document.getElementById('authForm').reset();
+        }
+
+        function updateUIForLoggedInUser() {
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('profileSection').style.display = 'block';
+            document.getElementById('profileInitial').textContent = currentUser.name.charAt(0).toUpperCase();
+        }
+
+        function toggleProfileDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('authButtons').style.display = 'block';
+            document.getElementById('profileSection').style.display = 'none';
+            showSection('home');
+            showToast('Logged out successfully', 'success');
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            if (!currentUser && ['profile', 'settings', 'applications'].includes(sectionId)) {
+                showAuthModal('login');
+                return;
+            }
+
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Add active class to corresponding nav link
+                const navLinks = document.querySelectorAll('.nav-link');
+                navLinks.forEach(link => {
+                    if (link.onclick && link.onclick.toString().includes(sectionId)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Load section-specific content
+            if (sectionId === 'applications') {
+                renderApplications();
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Job Management
+        function renderJobs(filteredJobs = null) {
+            const jobsToRender = filteredJobs || jobs;
+            const jobsGrid = document.getElementById('jobsGrid');
+            
+            if (jobsToRender.length === 0) {
+                jobsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--gray-500);">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🔍</div>
+                        <h3 style="margin-bottom: 1rem; color: var(--gray-700);">No jobs found</h3>
+                        <p>Try adjusting your search criteria or check back later for new opportunities.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            jobsGrid.innerHTML = jobsToRender.map(job => `
+                <div class="job-card" onclick="showJobDetails(${job.id})">
+                    <button class="wishlist-btn ${wishlist.includes(job.id) ? 'active' : ''}" 
+                            onclick="event.stopPropagation(); toggleWishlist(${job.id})">
+                        ${wishlist.includes(job.id) ? '❤️' : '🤍'}
+                    </button>
+                    
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">${job.title}</div>
+                            <div class="job-company">${job.company}</div>
+                            <div class="job-location">📍 ${job.location}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="job-salary">${job.salary}</div>
+                    
+                    <div class="job-tags">
+                        ${job.skills.slice(0, 4).map(skill => `<span class="job-tag">${skill}</span>`).join('')}
+                        ${job.skills.length > 4 ? `<span class="job-tag">+${job.skills.length - 4} more</span>` : ''}
+                    </div>
+                    
+                    <div class="job-meta">
+                        <span>🕒 ${formatDate(job.postedDate)}</span>
+                        <span>👥 ${job.applications} applicants</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); applyToJob(${job.id})" style="flex: 1;">
+                            Apply Now
+                        </button>
+                        <button class="btn btn-secondary" onclick="event.stopPropagation(); showJobDetails(${job.id})">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showJobDetails(jobId) {
+            currentJob = jobs.find(job => job.id === jobId);
+            if (!currentJob) return;
+            
+            document.getElementById('modalJobTitle').textContent = currentJob.title;
+            document.getElementById('modalJobContent').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 16px;">
+                    <div style="flex: 1;">
+                        <div style="color: var(--primary); font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">${currentJob.company}</div>
+                        <div style="color: var(--gray-600); margin-bottom: 0.5rem;">📍 ${currentJob.location}</div>
+                        <div style="color: var(--success); font-weight: 700; font-size: 1.2rem;">${currentJob.salary}</div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <span style="background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.875rem; font-weight: 600;">${currentJob.type}</span>
+                        <span style="background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.875rem; font-weight: 600;">${currentJob.experience}</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Job Description</h3>
+                    <p style="color: var(--gray-600); line-height: 1.7;">${currentJob.description}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Requirements</h3>
+                    <p style="color: var(--gray-600); line-height: 1.7;">${currentJob.requirements}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Benefits</h3>
+                    <p style="color: var(--gray-600); line-height: 1.7;">${currentJob.benefits}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Required Skills</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        ${currentJob.skills.map(skill => `<span class="job-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 16px;">
+                    <div style="display: flex; justify-content: space-between; color: var(--gray-600);">
+                        <span>📅 Posted: ${formatDate(currentJob.postedDate)}</span>
+                        <span>👥 ${currentJob.applications} applicants</span>
+                    </div>
+                </div>
+            `;
+            
+            updateWishlistButton();
+            showModal('jobModal');
+        }
+
+        function updateWishlistButton() {
+            const wishlistBtn = document.getElementById('wishlistModalBtn');
+            if (wishlist.includes(currentJob.id)) {
+                wishlistBtn.innerHTML = '<span>💔</span> Remove from Wishlist';
+            } else {
+                wishlistBtn.innerHTML = '<span>💖</span> Add to Wishlist';
+            }
+        }
+
+        function applyToJob(jobId = null) {
+            if (!currentUser) {
+                showAuthModal('login');
+                return;
+            }
+
+            const targetJob = jobId ? jobs.find(j => j.id === jobId) : currentJob;
+            if (!targetJob) return;
+
+            // Simulate application process
+            const application = {
+                id: Date.now(),
+                jobId: targetJob.id,
+                jobTitle: targetJob.title,
+                company: targetJob.company,
+                status: 'applied',
+                appliedDate: new Date().toISOString(),
+                matchScore: Math.floor(Math.random() * 30) + 65
+            };
+
+            applications.push(application);
+            
+            // Update job application count
+            targetJob.applications += 1;
+            
+            closeModal('jobModal');
+            showToast('Application submitted successfully!', 'success');
+            updateStats();
+        }
+
+        function toggleWishlist(jobId = null) {
+            const targetJobId = jobId || (currentJob ? currentJob.id : null);
+            if (!targetJobId) return;
+            
+            const index = wishlist.indexOf(targetJobId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Removed from wishlist', 'warning');
+            } else {
+                wishlist.push(targetJobId);
+                showToast('Added to wishlist', 'success');
+            }
+            
+            renderJobs();
+            updateWishlistButton();
+            updateStats();
+        }
+
+        function renderApplications() {
+            const content = document.getElementById('applicationsContent');
+            
+            if (applications.length === 0) {
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: var(--gray-500);">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📋</div>
+                        <h3 style="margin-bottom: 1rem; color: var(--gray-700);">No Applications Yet</h3>
+                        <p style="margin-bottom: 2rem;">Start applying to jobs to track your progress here.</p>
+                        <button class="btn btn-primary" onclick="showSection('jobs')">Browse Jobs</button>
+                    </div>
+                `;
+                return;
+            }
+
+            content.innerHTML = `
+                <div style="display: grid; gap: 1.5rem;">
+                    ${applications.map(app => `
+                        <div class="glass-card" style="padding: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h3 style="color: var(--gray-800); font-weight: 700; margin-bottom: 0.5rem;">${app.jobTitle}</h3>
+                                    <div style="color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">${app.company}</div>
+                                    <div style="color: var(--gray-500); font-size: 0.9rem;">Applied: ${formatDate(app.appliedDate)}</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="background: var(--success); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem;">
+                                        ${app.matchScore}% Match
+                                    </div>
+                                    <div style="background: var(--primary); color: white; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; text-transform: uppercase;">
+                                        ${app.status}
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                                <button class="btn btn-secondary" onclick="showJobDetails(${app.jobId})" style="font-size: 0.9rem;">View Job</button>
+                                <button class="btn btn-primary" onclick="openInterviewCopilot()" style="font-size: 0.9rem;">Interview Prep</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // AI Chat Interface
+        function openAIChat() {
+            const overlay = document.getElementById('aiChatOverlay');
+            overlay.style.display = 'flex';
+            setTimeout(() => overlay.classList.add('show'), 10);
+        }
+
+        function closeAIChat() {
+            const overlay = document.getElementById('aiChatOverlay');
+            overlay.classList.remove('show');
+            setTimeout(() => overlay.style.display = 'none', 300);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('aiChatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addUserMessage(message);
+            input.value = '';
+            
+            showTypingIndicator();
+            
+            try {
+                const response = await callAI(message);
+                hideTypingIndicator();
+                addAIMessage(response);
+            } catch (error) {
+                hideTypingIndicator();
+                addAIMessage("I'm having trouble connecting right now. Please try again in a moment.");
+            }
+        }
+
+        function addUserMessage(message) {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'user-message';
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            aiMessages.push({ type: 'user', content: message });
+        }
+
+        function addAIMessage(message) {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'ai-message';
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            aiMessages.push({ type: 'ai', content: message });
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('aiChatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-typing';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <span>AI is thinking</span>
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Search and Filter
+        function filterJobs() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const locationFilter = document.getElementById('locationFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            
+            let filteredJobs = jobs;
+            
+            if (searchTerm) {
+                filteredJobs = filteredJobs.filter(job =>
+                    job.title.toLowerCase().includes(searchTerm) ||
+                    job.company.toLowerCase().includes(searchTerm) ||
+                    job.skills.some(skill => skill.toLowerCase().includes(searchTerm)) ||
+                    job.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (locationFilter) {
+                filteredJobs = filteredJobs.filter(job =>
+                    job.location.toLowerCase().includes(locationFilter)
+                );
+            }
+            
+            if (categoryFilter) {
+                filteredJobs = filteredJobs.filter(job =>
+                    job.category === categoryFilter
+                );
+            }
+            
+            renderJobs(filteredJobs);
+        }
+
+        async function aiSmartFilter() {
+            showToast('AI analyzing your preferences...', 'info');
+            
+            try {
+                let filteredJobs = [...jobs];
+                
+                // Basic filtering logic - in a real app, this would use AI recommendations
+                if (applications.length > 0) {
+                    const userInterests = applications.flatMap(app => 
+                        jobs.find(j => j.id === app.jobId)?.skills || []
+                    );
+                    
+                    if (userInterests.length > 0) {
+                        filteredJobs = filteredJobs.filter(job => 
+                            job.skills.some(skill => 
+                                userInterests.some(userSkill => 
+                                    userSkill.toLowerCase().includes(skill.toLowerCase())
+                                )
+                            )
+                        );
+                    }
+                }
+                
+                // Simulate AI processing time
+                setTimeout(() => {
+                    renderJobs(filteredJobs);
+                    showToast(`Found ${filteredJobs.length} AI-matched jobs!`, 'success');
+                }, 2000);
+                
+            } catch (error) {
+                showToast('AI filter temporarily unavailable', 'warning');
+                console.error('AI filter error:', error);
+            }
+        }
+
+        // Utility Functions
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        function updateStats() {
+            document.getElementById('totalJobs').textContent = jobs.length;
+            document.getElementById('totalApplications').textContent = applications.length;
+            document.getElementById('wishlistCount').textContent = wishlist.length;
+            document.getElementById('appliedCount').textContent = applications.length;
+            document.getElementById('interviewCount').textContent = applications.filter(a => a.status === 'interview').length;
+            document.getElementById('offerCount').textContent = applications.filter(a => a.status === 'offer').length;
+        }
+
+        function openInterviewCopilot() {
+            showToast('Interview Copilot feature coming soon!', 'info');
+        }
+    </script>
+</body>
+</html>
